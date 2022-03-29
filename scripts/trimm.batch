@@ -1,0 +1,17 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2022-2-5_1 -M snowy
+#SBATCH -p core
+#SBATCH -J trimm.job
+#SBATCH -t 00:20:00
+
+load module bioinfo tools
+load module trimmomatic
+DIRHOME=/home/mildo141/ga/Dead-sea
+DIRDATA=/home/mildo141/ga/Dead-sea/raw_data/3_Thrash_2017
+DIRRESULTS=/home/mildo141/ga/Dead-sea/output/trimming
+
+
+trimomatic -threads 2 -phred33 -trimlog $DIRRESULTS/trim_D1.log -basein $DIRDATA/SRR4342137.1.fastq.gz
+$DIRDATA/SRR4342137.2.fastq.gz -baseout $DIRRESULT/unpaired output 1.fastq $DIRRESULT/paired output
+2.fastq $DIRRESULT/unpaired output 2.fastq
+
