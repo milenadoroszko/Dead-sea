@@ -1,0 +1,23 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2022-2-5
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -J megahit
+#SBATCH -t 18:00:00
+
+# Load modules
+module load bioinfo-tools
+module load megahit
+
+
+DIRHOME=/home/mildo141/ga/Dead-sea
+DIRDATA=/home/mildo141/ga/Dead-sea/raw_data/3_Thrash_2017/DNA_trimmed
+DIROUT=/home/mildo141/ga/Dead-sea/output/megahit
+
+
+# Create a directory
+
+mkdir -p /home/mildo141/ga/Dead-sea/output/megahit
+
+megahit -1 $DIRDATA/SRR4342129_1.paired.trimmed.fastq.gz -2 $DIRDATA/SRR4342129_2.paired.trimmed.fastq.gz -o $DIROUT/SRR4342129_assembly.contigs
+megahit -1 $DIRDATA/SRR4342133_1.paired.trimmed.fastq.gz -2 $DIRDATA/SRR4342133_2.paired.trimmed.fastq.gz -o $DIROUT/SRR4342133_assembly.contigs

@@ -1,0 +1,35 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5 
+#SBATCH -M snowy 
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 12:00:00
+#SBATCH -J bwa.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+set -x
+# Load modules
+module load bioinfo-tools
+module load bwa
+module load samtools
+
+# Make directory for the output
+
+mkdir -p /home/mildo141/ga/output/bwa_DNA
+
+#define directories
+OUT=/home/mildo141/ga/output
+IN=/home/mildo141/ga/Dead-sea/raw_data/3_Thrash_2017/DNA_trimmed/
+
+REF=$OUT/megahit/SRR4342133_assembly.contigs/intermediate_contigs
+
+#DNA files SRR4342129_1.paired.trimmed.fastq.gz  SRR4342129_2.paired.trimmed.fastq.gz  SRR4342133_1.paired.trimmed.fastq.gz  SRR4342133_2.paired.trimmed.fastq.gz
+
+
+for sample in $REF/*.final.contigs.fa
+do
+bwa index $REF/*.final.contigs.fa
+bwa mem -t 2 $REF/{sample}.final.contigs.fa $IN/{sample}.paired.trimmed.fastq.gz $IN/{sample}.paired.trimmed.fastq.gz > $OUT/bwa_DNA/{sample}.sam
+#samtools sort ${sample}.sam -o ${sample}.bam
+done

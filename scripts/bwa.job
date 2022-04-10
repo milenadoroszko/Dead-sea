@@ -1,0 +1,36 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5 
+#SBATCH -M snowy 
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 12:00:00
+#SBATCH -J bwa.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+# Load modules
+module load bioinfo-tools
+module load bwa
+module load samtools
+
+# Make directory for the output
+
+mkdir -p /home/mildo141/ga/output/bwa_DNA
+OUT= /home/mildo141/ga/output/bwa_DNA
+IN=/home/mildo141/ga/Dead-sea/raw_data/3_Thrash_2017/DNA_trimmed
+
+#DNA files SRR4342129_1.paired.trimmed.fastq.gz  SRR4342129_2.paired.trimmed.fastq.gz  SRR4342133_1.paired.trimmed.fastq.gz  SRR4342133_2.paired.trimmed.fastq.gz
+
+
+
+#example of code: bwa mem ref.fa read1.fq read2.fq > ${sample}.sam
+
+ bwa index $OUT/megahit/SRR4342129_assembly.contigs
+ bwa mem -t 2 $OUT/megahit/SRR4342129_assembly.contigs $IN/SRR4342129_1.paired.trimmed.fastq.gz $IN/SRR4342129_2.paired.trimmed.fastq.gz > $OUT/SRR4342129.sam
+ samtools view -S -b $OUT/SRR4342129.sam > $OUT/SRR4342129.bam
+ #rm ${n}_137.sam
+ bwa index $OUT/megahit/SRR4342133_assembly.contigs
+ bwa mem -t 2 $OUT/megahit/SRR4342133_assembly.contigs $IN/SRR4342133_1.paired.trimmed.fastq.gz $IN/SRR4342133_2.paired.trimmed.fastq.gz > $OUT/SRR4342133.sam
+ samtools view -S -b $OUT/SRR4342133.sam > $OUT/SRR4342133.bam
+ #rm ${n}_139.sam

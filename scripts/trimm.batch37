@@ -1,0 +1,38 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -J trimm37.job
+#SBATCH -t 00:20:00
+
+module load  bioinfo-tools
+module load trimmomatic
+
+DIRHOME="/home/mildo141/ga"
+DIRDATA="$DIRHOME/Dead-sea/raw_data/3_Thrash_2017/RNA_untrimmed"
+
+mkdir -p $DIRHOME/output/01_trimming
+OUT=$DIRHOME/output/01_trimming
+
+
+if ![ -e $OUT/trim_D1.log ]
+then
+touch $OUT/trim_D1.log
+fi
+
+
+trimmomatic PE -threads 2 -phred33 -trimlog $OUT/trim_D1.log $DIRDATA/SRR4342137.1.fastq.gz $DIRDATA/SRR4342137.2.fastq.gz $OUT/RNA_trim_37.LP.trim.fastq.gz $OUT/RNA_trim_37.LU.trim.fastq.gz $OUT/RNA_trim_37.RP.trim.fastq.gz $OUT/RNA_trim_37.RU.trim.fastq.gz ILLUMINACLIP:/sw/apps/bioinfo/trimmomatic/0.36/milou/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:20 SLIDINGWINDOW:5:30 MINLEN:20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
