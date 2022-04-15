@@ -1,0 +1,230 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 03:00:00
+#SBATCH -J checkM.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+#to help identify the work
+cat $0
+echo QOS = $SLURM_QOS
+set -x
+
+# Load modules
+module load bioinfo-tools
+module load CheckM
+
+#check which modules were loaded
+module list
+
+# Make directory for the output
+
+mkdir -p /home/mildo141/ga/output/05_checkM
+mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342129_qc/bins
+
+mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342133_qc/bins
+
+
+IN=/home/mildo141/ga/output/03_metabat
+OUT=/home/mildo141/ga/output/05_checkM
+
+# 4 threads (-t)  and fa (-x) as a file extension
+checkm lineage_wf -t 4 -x fa --reduced_tree $IN/SRR4342129 $OUT/SRR4342129_qc
+checkm analyze -t 4 -x fa $OUT/SRR4342129_qc/lineage.ms $IN/SRR4342129 $OUT/SRR4342129_qc
+checkm qa -t 4 -o 1 -f $OUT/SRR4342129_qc/qa.out $OUT/SRR4342129_qc/lineage.ms $OUT/SRR4342129_qc
+
+checkm lineage_wf -t 4 -x fa --reduced_tree $IN/SRR4342133 $OUT/SRR4342133_qc
+checkm analyze -t 4 -x fa $OUT/SRR4342133_qc/lineage.ms $IN/SRR4342133 $OUT/SRR4342133_qc
+checkm qa -t 4 -o 1 -f $OUT/SRR4342133_qc/qa.out $OUT/SRR4342133_qc/lineage.ms $OUT/SRR4342133_qc
+QOS =
++ module load bioinfo-tools
+++ /usr/share/lmod/lmod/libexec/lmod bash load bioinfo-tools
++ eval '__LMOD_REF_COUNT_LOADEDMODULES=uppmax:2\;bioinfo-tools:1;' export '__LMOD_REF_COUNT_LOADEDMODULES;' 'LOADEDMODULES=uppmax:bioinfo-tools;' export 'LOADEDMODULES;' '__LMOD_REF_COUNT_MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:1\;/sw/mf/snowy/bioinfo-tools/alignment:1\;/sw/mf/snowy/bioinfo-tools/assembly:1\;/sw/mf/snowy/bioinfo-tools/misc:1\;/sw/mf/snowy/bioinfo-tools/phylogeny:1\;/sw/mf/snowy/bioinfo-tools/pipelines:1\;/sw/mf/snowy/bioinfo-tools/sw_collections:1\;/sw/mf/snowy/applications:1\;/sw/mf/snowy/build-tools:1\;/sw/mf/snowy/compilers:1\;/sw/mf/snowy/data:1\;/sw/mf/snowy/environment:1\;/sw/mf/snowy/libraries:1\;/sw/mf/snowy/parallel:1;' export '__LMOD_REF_COUNT_MODULEPATH;' 'MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:/sw/mf/snowy/bioinfo-tools/alignment:/sw/mf/snowy/bioinfo-tools/assembly:/sw/mf/snowy/bioinfo-tools/misc:/sw/mf/snowy/bioinfo-tools/phylogeny:/sw/mf/snowy/bioinfo-tools/pipelines:/sw/mf/snowy/bioinfo-tools/sw_collections:/sw/mf/snowy/applications:/sw/mf/snowy/build-tools:/sw/mf/snowy/compilers:/sw/mf/snowy/data:/sw/mf/snowy/environment:/sw/mf/snowy/libraries:/sw/mf/snowy/parallel;' export 'MODULEPATH;' '__LMOD_REF_COUNT__LMFILES_=/sw/mf/snowy/environment/bioinfo-tools:1;' export '__LMOD_REF_COUNT__LMFILES_;' '_LMFILES_=/sw/mf/snowy/environment/bioinfo-tools;' export '_LMFILES_;' '_ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtbImJpb2luZm8tdG9vbHMiXT17WyJmbiJdPSIvc3cvbWYvc25vd3kvZW52aXJvbm1lbnQvYmlvaW5mby10b29scyIsWyJmdWxsTmFtZSJdPSJiaW9pbmZvLXRvb2xzIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0iYmlvaW5mby10b29scyIsfSx9LG1wYXRoQT17Ii9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL2Fubm90YXRpb24iLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9hbGlnbm1lbnQiLCIvc3cv;' export '_ModuleTable001_;' '_ModuleTable002_=bWYvc25vd3kvYmlvaW5mby10b29scy9hc3NlbWJseSIsIi9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL21pc2MiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9waHlsb2dlbnkiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9waXBlbGluZXMiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9zd19jb2xsZWN0aW9ucyIsIi9zdy9tZi9zbm93eS9hcHBsaWNhdGlvbnMiLCIvc3cvbWYvc25vd3kvYnVpbGQtdG9vbHMiLCIvc3cvbWYvc25vd3kvY29tcGlsZXJzIiwiL3N3L21mL3Nub3d5L2RhdGEiLCIvc3cvbWYvc25vd3kvZW52aXJvbm1lbnQiLCIvc3cvbWYvc25vd3kvbGlicmFyaWVzIiwiL3N3L21mL3Nub3d5L3BhcmFsbGVsIix9LFsic3lzdGVtQmFzZU1QQVRI;' export '_ModuleTable002_;' '_ModuleTable003_=Il09Ii9zdy9tZi9zbm93eS9hcHBsaWNhdGlvbnM6L3N3L21mL3Nub3d5L2J1aWxkLXRvb2xzOi9zdy9tZi9zbm93eS9jb21waWxlcnM6L3N3L21mL3Nub3d5L2RhdGE6L3N3L21mL3Nub3d5L2Vudmlyb25tZW50Oi9zdy9tZi9zbm93eS9saWJyYXJpZXM6L3N3L21mL3Nub3d5L3BhcmFsbGVsIix9;' export '_ModuleTable003_;' '_ModuleTable_Sz_=3;' export '_ModuleTable_Sz_;'
+++ __LMOD_REF_COUNT_LOADEDMODULES='uppmax:2;bioinfo-tools:1'
+++ export __LMOD_REF_COUNT_LOADEDMODULES
+++ LOADEDMODULES=uppmax:bioinfo-tools
+++ export LOADEDMODULES
+++ __LMOD_REF_COUNT_MODULEPATH='/sw/mf/snowy/bioinfo-tools/annotation:1;/sw/mf/snowy/bioinfo-tools/alignment:1;/sw/mf/snowy/bioinfo-tools/assembly:1;/sw/mf/snowy/bioinfo-tools/misc:1;/sw/mf/snowy/bioinfo-tools/phylogeny:1;/sw/mf/snowy/bioinfo-tools/pipelines:1;/sw/mf/snowy/bioinfo-tools/sw_collections:1;/sw/mf/snowy/applications:1;/sw/mf/snowy/build-tools:1;/sw/mf/snowy/compilers:1;/sw/mf/snowy/data:1;/sw/mf/snowy/environment:1;/sw/mf/snowy/libraries:1;/sw/mf/snowy/parallel:1'
+++ export __LMOD_REF_COUNT_MODULEPATH
+++ MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:/sw/mf/snowy/bioinfo-tools/alignment:/sw/mf/snowy/bioinfo-tools/assembly:/sw/mf/snowy/bioinfo-tools/misc:/sw/mf/snowy/bioinfo-tools/phylogeny:/sw/mf/snowy/bioinfo-tools/pipelines:/sw/mf/snowy/bioinfo-tools/sw_collections:/sw/mf/snowy/applications:/sw/mf/snowy/build-tools:/sw/mf/snowy/compilers:/sw/mf/snowy/data:/sw/mf/snowy/environment:/sw/mf/snowy/libraries:/sw/mf/snowy/parallel
+++ export MODULEPATH
+++ __LMOD_REF_COUNT__LMFILES_=/sw/mf/snowy/environment/bioinfo-tools:1
+++ export __LMOD_REF_COUNT__LMFILES_
+++ _LMFILES_=/sw/mf/snowy/environment/bioinfo-tools
+++ export _LMFILES_
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtbImJpb2luZm8tdG9vbHMiXT17WyJmbiJdPSIvc3cvbWYvc25vd3kvZW52aXJvbm1lbnQvYmlvaW5mby10b29scyIsWyJmdWxsTmFtZSJdPSJiaW9pbmZvLXRvb2xzIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0iYmlvaW5mby10b29scyIsfSx9LG1wYXRoQT17Ii9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL2Fubm90YXRpb24iLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9hbGlnbm1lbnQiLCIvc3cv
+++ export _ModuleTable001_
+++ _ModuleTable002_=bWYvc25vd3kvYmlvaW5mby10b29scy9hc3NlbWJseSIsIi9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL21pc2MiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9waHlsb2dlbnkiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9waXBlbGluZXMiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9zd19jb2xsZWN0aW9ucyIsIi9zdy9tZi9zbm93eS9hcHBsaWNhdGlvbnMiLCIvc3cvbWYvc25vd3kvYnVpbGQtdG9vbHMiLCIvc3cvbWYvc25vd3kvY29tcGlsZXJzIiwiL3N3L21mL3Nub3d5L2RhdGEiLCIvc3cvbWYvc25vd3kvZW52aXJvbm1lbnQiLCIvc3cvbWYvc25vd3kvbGlicmFyaWVzIiwiL3N3L21mL3Nub3d5L3BhcmFsbGVsIix9LFsic3lzdGVtQmFzZU1QQVRI
+++ export _ModuleTable002_
+++ _ModuleTable003_=Il09Ii9zdy9tZi9zbm93eS9hcHBsaWNhdGlvbnM6L3N3L21mL3Nub3d5L2J1aWxkLXRvb2xzOi9zdy9tZi9zbm93eS9jb21waWxlcnM6L3N3L21mL3Nub3d5L2RhdGE6L3N3L21mL3Nub3d5L2Vudmlyb25tZW50Oi9zdy9tZi9zbm93eS9saWJyYXJpZXM6L3N3L21mL3Nub3d5L3BhcmFsbGVsIix9
+++ export _ModuleTable003_
+++ _ModuleTable_Sz_=3
+++ export _ModuleTable_Sz_
+++ : -s sh
++ eval
++ module load CheckM
+++ /usr/share/lmod/lmod/libexec/lmod bash load CheckM
+Several complimentary python scripts are available with pplacer/1.1.alpha19. 'module help pplacer/1.1.alpha19' for more information
+To set up a CheckM data directory, see 'module help CheckM/1.1.3'
++ eval 'CHECKM_DATA=/sw/bioinfo/CheckM/data;' export 'CHECKM_DATA;' 'CHECKM_ROOT=/sw/bioinfo/CheckM/1.1.3/snowy;' export 'CHECKM_ROOT;' 'HMMER_HOME=/sw/apps/bioinfo/hmmer/3.2.1/snowy;' export 'HMMER_HOME;' '__LMOD_REF_COUNT_LD_LIBRARY_PATH=/sw/libs/wxWidgets/lib:1;' export '__LMOD_REF_COUNT_LD_LIBRARY_PATH;' 'LD_LIBRARY_PATH=/sw/libs/wxWidgets/lib;' export 'LD_LIBRARY_PATH;' '__LMOD_REF_COUNT_LOADEDMODULES=uppmax:2\;bioinfo-tools:1\;python/3.8.7:1\;hmmer/3.2.1:1\;prodigal/2.6.3:1\;pplacer/1.1.alpha19:1\;CheckM/1.1.3:1;' export '__LMOD_REF_COUNT_LOADEDMODULES;' 'LOADEDMODULES=uppmax:bioinfo-tools:python/3.8.7:hmmer/3.2.1:prodigal/2.6.3:pplacer/1.1.alpha19:CheckM/1.1.3;' export 'LOADEDMODULES;' '__LMOD_REF_COUNT_MANPATH=/sw/comp/python/3.8.7_snowy/share/man:1\;/usr/share/man:2\;/sw/uppmax/man:2\;/opt/thinlinc/share/man:2\;/sw/apps/bioinfo/hmmer/3.2.1/snowy/man:1;' export '__LMOD_REF_COUNT_MANPATH;' 'MANPATH=/sw/comp/python/3.8.7_snowy/share/man:/usr/share/man:/sw/uppmax/man:/opt/thinlinc/share/man:/sw/apps/bioinfo/hmmer/3.2.1/snowy/man;' export 'MANPATH;' 'MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:/sw/mf/snowy/bioinfo-tools/alignment:/sw/mf/snowy/bioinfo-tools/assembly:/sw/mf/snowy/bioinfo-tools/misc:/sw/mf/snowy/bioinfo-tools/phylogeny:/sw/mf/snowy/bioinfo-tools/pipelines:/sw/mf/snowy/bioinfo-tools/sw_collections:/sw/mf/snowy/applications:/sw/mf/snowy/build-tools:/sw/mf/snowy/compilers:/sw/mf/snowy/data:/sw/mf/snowy/environment:/sw/mf/snowy/libraries:/sw/mf/snowy/parallel;' export 'MODULEPATH;' '__LMOD_REF_COUNT_PATH=/sw/bioinfo/CheckM/1.1.3/snowy/bin:1\;/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy:1\;/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy/scripts:1\;/sw/apps/bioinfo/prodigal/2.6.3/snowy/bin:1\;/sw/apps/bioinfo/hmmer/3.2.1/snowy/bin:1\;/sw/comp/python/3.8.7_snowy/bin:1\;/home/mildo141/bin:2\;/usr/local/bin:1\;/usr/bin:1\;/usr/local/sbin:1\;/usr/sbin:1\;/sw/uppmax/bin:2;' export '__LMOD_REF_COUNT_PATH;' 'PATH=/sw/bioinfo/CheckM/1.1.3/snowy/bin:/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy:/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy/scripts:/sw/apps/bioinfo/prodigal/2.6.3/snowy/bin:/sw/apps/bioinfo/hmmer/3.2.1/snowy/bin:/sw/comp/python/3.8.7_snowy/bin:/home/mildo141/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sw/uppmax/bin;' export 'PATH;' '__LMOD_REF_COUNT_PKG_CONFIG_PATH=/sw/comp/python/3.8.7_snowy/lib/pkgconfig:1;' export '__LMOD_REF_COUNT_PKG_CONFIG_PATH;' 'PKG_CONFIG_PATH=/sw/comp/python/3.8.7_snowy/lib/pkgconfig;' export 'PKG_CONFIG_PATH;' 'PPLACER_ROOT=/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy;' export 'PPLACER_ROOT;' 'PYTHON_ROOT=/sw/comp/python/3.8.7_snowy;' export 'PYTHON_ROOT;' '__LMOD_REF_COUNT__LMFILES_=/sw/mf/snowy/environment/bioinfo-tools:1\;/sw/mf/snowy/compilers/python/3.8.7:1\;/sw/mf/snowy/bioinfo-tools/alignment/hmmer/3.2.1:1\;/sw/mf/snowy/bioinfo-tools/misc/prodigal/2.6.3:1\;/sw/mf/snowy/bioinfo-tools/alignment/pplacer/1.1.alpha19:1\;/sw/mf/snowy/bioinfo-tools/misc/CheckM/1.1.3:1;' export '__LMOD_REF_COUNT__LMFILES_;' '_LMFILES_=/sw/mf/snowy/environment/bioinfo-tools:/sw/mf/snowy/compilers/python/3.8.7:/sw/mf/snowy/bioinfo-tools/alignment/hmmer/3.2.1:/sw/mf/snowy/bioinfo-tools/misc/prodigal/2.6.3:/sw/mf/snowy/bioinfo-tools/alignment/pplacer/1.1.alpha19:/sw/mf/snowy/bioinfo-tools/misc/CheckM/1.1.3;' export '_LMFILES_;' '_ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtDaGVja009e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9DaGVja00vMS4xLjMiLFsiZnVsbE5hbWUiXT0iQ2hlY2tNLzEuMS4zIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0iQ2hlY2tNIix9LFsiYmlvaW5mby10b29scyJdPXtbImZuIl09Ii9zdy9tZi9zbm93eS9lbnZpcm9ubWVudC9iaW9pbmZvLXRvb2xzIixbImZ1bGxOYW1lIl09ImJpb2luZm8tdG9vbHMiLFsibG9hZE9yZGVy;' export '_ModuleTable001_;' '_ModuleTable002_=Il09MSxwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJiaW9pbmZvLXRvb2xzIix9LGhtbWVyPXtbImZuIl09Ii9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL2FsaWdubWVudC9obW1lci8zLjIuMSIsWyJmdWxsTmFtZSJdPSJobW1lci8zLjIuMSIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImhtbWVyLzMuMi4xIix9LHBwbGFjZXI9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50L3BwbGFjZXIvMS4xLmFscGhhMTkiLFsiZnVsbE5hbWUiXT0icHBsYWNlci8xLjEuYWxwaGExOSIsWyJsb2FkT3Jk;' export '_ModuleTable002_;' '_ModuleTable003_=ZXIiXT01LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InBwbGFjZXIvMS4xLmFscGhhMTkiLH0scHJvZGlnYWw9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9wcm9kaWdhbC8yLjYuMyIsWyJmdWxsTmFtZSJdPSJwcm9kaWdhbC8yLjYuMyIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InByb2RpZ2FsLzIuNi4zIix9LHB5dGhvbj17WyJmbiJdPSIvc3cvbWYvc25vd3kvY29tcGlsZXJzL3B5dGhvbi8zLjguNyIsWyJmdWxsTmFtZSJdPSJweXRob24vMy44LjciLFsibG9hZE9yZGVyIl09Mixwcm9wVD17;' export '_ModuleTable003_;' '_ModuleTable004_=fSxbInN0YWNrRGVwdGgiXT0xLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJweXRob24vMy44LjciLH0sfSxtcGF0aEE9eyIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9hbm5vdGF0aW9uIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYXNzZW1ibHkiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9taXNjIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGh5bG9nZW55IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGlwZWxpbmVzIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvc3dfY29sbGVjdGlvbnMiLCIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zIiwiL3N3;' export '_ModuleTable004_;' '_ModuleTable005_=L21mL3Nub3d5L2J1aWxkLXRvb2xzIiwiL3N3L21mL3Nub3d5L2NvbXBpbGVycyIsIi9zdy9tZi9zbm93eS9kYXRhIiwiL3N3L21mL3Nub3d5L2Vudmlyb25tZW50IiwiL3N3L21mL3Nub3d5L2xpYnJhcmllcyIsIi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zOi9zdy9tZi9zbm93eS9idWlsZC10b29sczovc3cvbWYvc25vd3kvY29tcGlsZXJzOi9zdy9tZi9zbm93eS9kYXRhOi9zdy9tZi9zbm93eS9lbnZpcm9ubWVudDovc3cvbWYvc25vd3kvbGlicmFyaWVzOi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfQ==;' export '_ModuleTable005_;' '_ModuleTable_Sz_=5;' export '_ModuleTable_Sz_;'
+++ CHECKM_DATA=/sw/bioinfo/CheckM/data
+++ export CHECKM_DATA
+++ CHECKM_ROOT=/sw/bioinfo/CheckM/1.1.3/snowy
+++ export CHECKM_ROOT
+++ HMMER_HOME=/sw/apps/bioinfo/hmmer/3.2.1/snowy
+++ export HMMER_HOME
+++ __LMOD_REF_COUNT_LD_LIBRARY_PATH=/sw/libs/wxWidgets/lib:1
+++ export __LMOD_REF_COUNT_LD_LIBRARY_PATH
+++ LD_LIBRARY_PATH=/sw/libs/wxWidgets/lib
+++ export LD_LIBRARY_PATH
+++ __LMOD_REF_COUNT_LOADEDMODULES='uppmax:2;bioinfo-tools:1;python/3.8.7:1;hmmer/3.2.1:1;prodigal/2.6.3:1;pplacer/1.1.alpha19:1;CheckM/1.1.3:1'
+++ export __LMOD_REF_COUNT_LOADEDMODULES
+++ LOADEDMODULES=uppmax:bioinfo-tools:python/3.8.7:hmmer/3.2.1:prodigal/2.6.3:pplacer/1.1.alpha19:CheckM/1.1.3
+++ export LOADEDMODULES
+++ __LMOD_REF_COUNT_MANPATH='/sw/comp/python/3.8.7_snowy/share/man:1;/usr/share/man:2;/sw/uppmax/man:2;/opt/thinlinc/share/man:2;/sw/apps/bioinfo/hmmer/3.2.1/snowy/man:1'
+++ export __LMOD_REF_COUNT_MANPATH
+++ MANPATH=/sw/comp/python/3.8.7_snowy/share/man:/usr/share/man:/sw/uppmax/man:/opt/thinlinc/share/man:/sw/apps/bioinfo/hmmer/3.2.1/snowy/man
+++ export MANPATH
+++ MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:/sw/mf/snowy/bioinfo-tools/alignment:/sw/mf/snowy/bioinfo-tools/assembly:/sw/mf/snowy/bioinfo-tools/misc:/sw/mf/snowy/bioinfo-tools/phylogeny:/sw/mf/snowy/bioinfo-tools/pipelines:/sw/mf/snowy/bioinfo-tools/sw_collections:/sw/mf/snowy/applications:/sw/mf/snowy/build-tools:/sw/mf/snowy/compilers:/sw/mf/snowy/data:/sw/mf/snowy/environment:/sw/mf/snowy/libraries:/sw/mf/snowy/parallel
+++ export MODULEPATH
+++ __LMOD_REF_COUNT_PATH='/sw/bioinfo/CheckM/1.1.3/snowy/bin:1;/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy:1;/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy/scripts:1;/sw/apps/bioinfo/prodigal/2.6.3/snowy/bin:1;/sw/apps/bioinfo/hmmer/3.2.1/snowy/bin:1;/sw/comp/python/3.8.7_snowy/bin:1;/home/mildo141/bin:2;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/sw/uppmax/bin:2'
+++ export __LMOD_REF_COUNT_PATH
+++ PATH=/sw/bioinfo/CheckM/1.1.3/snowy/bin:/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy:/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy/scripts:/sw/apps/bioinfo/prodigal/2.6.3/snowy/bin:/sw/apps/bioinfo/hmmer/3.2.1/snowy/bin:/sw/comp/python/3.8.7_snowy/bin:/home/mildo141/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sw/uppmax/bin
+++ export PATH
+++ __LMOD_REF_COUNT_PKG_CONFIG_PATH=/sw/comp/python/3.8.7_snowy/lib/pkgconfig:1
+++ export __LMOD_REF_COUNT_PKG_CONFIG_PATH
+++ PKG_CONFIG_PATH=/sw/comp/python/3.8.7_snowy/lib/pkgconfig
+++ export PKG_CONFIG_PATH
+++ PPLACER_ROOT=/sw/apps/bioinfo/pplacer/1.1.alpha19/snowy
+++ export PPLACER_ROOT
+++ PYTHON_ROOT=/sw/comp/python/3.8.7_snowy
+++ export PYTHON_ROOT
+++ __LMOD_REF_COUNT__LMFILES_='/sw/mf/snowy/environment/bioinfo-tools:1;/sw/mf/snowy/compilers/python/3.8.7:1;/sw/mf/snowy/bioinfo-tools/alignment/hmmer/3.2.1:1;/sw/mf/snowy/bioinfo-tools/misc/prodigal/2.6.3:1;/sw/mf/snowy/bioinfo-tools/alignment/pplacer/1.1.alpha19:1;/sw/mf/snowy/bioinfo-tools/misc/CheckM/1.1.3:1'
+++ export __LMOD_REF_COUNT__LMFILES_
+++ _LMFILES_=/sw/mf/snowy/environment/bioinfo-tools:/sw/mf/snowy/compilers/python/3.8.7:/sw/mf/snowy/bioinfo-tools/alignment/hmmer/3.2.1:/sw/mf/snowy/bioinfo-tools/misc/prodigal/2.6.3:/sw/mf/snowy/bioinfo-tools/alignment/pplacer/1.1.alpha19:/sw/mf/snowy/bioinfo-tools/misc/CheckM/1.1.3
+++ export _LMFILES_
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtDaGVja009e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9DaGVja00vMS4xLjMiLFsiZnVsbE5hbWUiXT0iQ2hlY2tNLzEuMS4zIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0iQ2hlY2tNIix9LFsiYmlvaW5mby10b29scyJdPXtbImZuIl09Ii9zdy9tZi9zbm93eS9lbnZpcm9ubWVudC9iaW9pbmZvLXRvb2xzIixbImZ1bGxOYW1lIl09ImJpb2luZm8tdG9vbHMiLFsibG9hZE9yZGVy
+++ export _ModuleTable001_
+++ _ModuleTable002_=Il09MSxwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJiaW9pbmZvLXRvb2xzIix9LGhtbWVyPXtbImZuIl09Ii9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL2FsaWdubWVudC9obW1lci8zLjIuMSIsWyJmdWxsTmFtZSJdPSJobW1lci8zLjIuMSIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImhtbWVyLzMuMi4xIix9LHBwbGFjZXI9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50L3BwbGFjZXIvMS4xLmFscGhhMTkiLFsiZnVsbE5hbWUiXT0icHBsYWNlci8xLjEuYWxwaGExOSIsWyJsb2FkT3Jk
+++ export _ModuleTable002_
+++ _ModuleTable003_=ZXIiXT01LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InBwbGFjZXIvMS4xLmFscGhhMTkiLH0scHJvZGlnYWw9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9wcm9kaWdhbC8yLjYuMyIsWyJmdWxsTmFtZSJdPSJwcm9kaWdhbC8yLjYuMyIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InByb2RpZ2FsLzIuNi4zIix9LHB5dGhvbj17WyJmbiJdPSIvc3cvbWYvc25vd3kvY29tcGlsZXJzL3B5dGhvbi8zLjguNyIsWyJmdWxsTmFtZSJdPSJweXRob24vMy44LjciLFsibG9hZE9yZGVyIl09Mixwcm9wVD17
+++ export _ModuleTable003_
+++ _ModuleTable004_=fSxbInN0YWNrRGVwdGgiXT0xLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJweXRob24vMy44LjciLH0sfSxtcGF0aEE9eyIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9hbm5vdGF0aW9uIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYXNzZW1ibHkiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9taXNjIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGh5bG9nZW55IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGlwZWxpbmVzIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvc3dfY29sbGVjdGlvbnMiLCIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zIiwiL3N3
+++ export _ModuleTable004_
+++ _ModuleTable005_=L21mL3Nub3d5L2J1aWxkLXRvb2xzIiwiL3N3L21mL3Nub3d5L2NvbXBpbGVycyIsIi9zdy9tZi9zbm93eS9kYXRhIiwiL3N3L21mL3Nub3d5L2Vudmlyb25tZW50IiwiL3N3L21mL3Nub3d5L2xpYnJhcmllcyIsIi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zOi9zdy9tZi9zbm93eS9idWlsZC10b29sczovc3cvbWYvc25vd3kvY29tcGlsZXJzOi9zdy9tZi9zbm93eS9kYXRhOi9zdy9tZi9zbm93eS9lbnZpcm9ubWVudDovc3cvbWYvc25vd3kvbGlicmFyaWVzOi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfQ==
+++ export _ModuleTable005_
+++ _ModuleTable_Sz_=5
+++ export _ModuleTable_Sz_
+++ : -s sh
++ eval
++ module list
+++ /usr/share/lmod/lmod/libexec/lmod bash list
+
+Currently Loaded Modules:
+  1) bioinfo-tools   3) hmmer/3.2.1      5) pplacer/1.1.alpha19
+  2) python/3.8.7    4) prodigal/2.6.3   6) CheckM/1.1.3
+
+ 
+
++ eval 'MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:/sw/mf/snowy/bioinfo-tools/alignment:/sw/mf/snowy/bioinfo-tools/assembly:/sw/mf/snowy/bioinfo-tools/misc:/sw/mf/snowy/bioinfo-tools/phylogeny:/sw/mf/snowy/bioinfo-tools/pipelines:/sw/mf/snowy/bioinfo-tools/sw_collections:/sw/mf/snowy/applications:/sw/mf/snowy/build-tools:/sw/mf/snowy/compilers:/sw/mf/snowy/data:/sw/mf/snowy/environment:/sw/mf/snowy/libraries:/sw/mf/snowy/parallel;' export 'MODULEPATH;' '_ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtDaGVja009e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9DaGVja00vMS4xLjMiLFsiZnVsbE5hbWUiXT0iQ2hlY2tNLzEuMS4zIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0iQ2hlY2tNIix9LFsiYmlvaW5mby10b29scyJdPXtbImZuIl09Ii9zdy9tZi9zbm93eS9lbnZpcm9ubWVudC9iaW9pbmZvLXRvb2xzIixbImZ1bGxOYW1lIl09ImJpb2luZm8tdG9vbHMiLFsibG9hZE9yZGVy;' export '_ModuleTable001_;' '_ModuleTable002_=Il09MSxwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJiaW9pbmZvLXRvb2xzIix9LGhtbWVyPXtbImZuIl09Ii9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL2FsaWdubWVudC9obW1lci8zLjIuMSIsWyJmdWxsTmFtZSJdPSJobW1lci8zLjIuMSIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImhtbWVyLzMuMi4xIix9LHBwbGFjZXI9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50L3BwbGFjZXIvMS4xLmFscGhhMTkiLFsiZnVsbE5hbWUiXT0icHBsYWNlci8xLjEuYWxwaGExOSIsWyJsb2FkT3Jk;' export '_ModuleTable002_;' '_ModuleTable003_=ZXIiXT01LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InBwbGFjZXIvMS4xLmFscGhhMTkiLH0scHJvZGlnYWw9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9wcm9kaWdhbC8yLjYuMyIsWyJmdWxsTmFtZSJdPSJwcm9kaWdhbC8yLjYuMyIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InByb2RpZ2FsLzIuNi4zIix9LHB5dGhvbj17WyJmbiJdPSIvc3cvbWYvc25vd3kvY29tcGlsZXJzL3B5dGhvbi8zLjguNyIsWyJmdWxsTmFtZSJdPSJweXRob24vMy44LjciLFsibG9hZE9yZGVyIl09Mixwcm9wVD17;' export '_ModuleTable003_;' '_ModuleTable004_=fSxbInN0YWNrRGVwdGgiXT0xLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJweXRob24vMy44LjciLH0sfSxtcGF0aEE9eyIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9hbm5vdGF0aW9uIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYXNzZW1ibHkiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9taXNjIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGh5bG9nZW55IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGlwZWxpbmVzIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvc3dfY29sbGVjdGlvbnMiLCIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zIiwiL3N3;' export '_ModuleTable004_;' '_ModuleTable005_=L21mL3Nub3d5L2J1aWxkLXRvb2xzIiwiL3N3L21mL3Nub3d5L2NvbXBpbGVycyIsIi9zdy9tZi9zbm93eS9kYXRhIiwiL3N3L21mL3Nub3d5L2Vudmlyb25tZW50IiwiL3N3L21mL3Nub3d5L2xpYnJhcmllcyIsIi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zOi9zdy9tZi9zbm93eS9idWlsZC10b29sczovc3cvbWYvc25vd3kvY29tcGlsZXJzOi9zdy9tZi9zbm93eS9kYXRhOi9zdy9tZi9zbm93eS9lbnZpcm9ubWVudDovc3cvbWYvc25vd3kvbGlicmFyaWVzOi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfQ==;' export '_ModuleTable005_;' '_ModuleTable_Sz_=5;' export '_ModuleTable_Sz_;'
+++ MODULEPATH=/sw/mf/snowy/bioinfo-tools/annotation:/sw/mf/snowy/bioinfo-tools/alignment:/sw/mf/snowy/bioinfo-tools/assembly:/sw/mf/snowy/bioinfo-tools/misc:/sw/mf/snowy/bioinfo-tools/phylogeny:/sw/mf/snowy/bioinfo-tools/pipelines:/sw/mf/snowy/bioinfo-tools/sw_collections:/sw/mf/snowy/applications:/sw/mf/snowy/build-tools:/sw/mf/snowy/compilers:/sw/mf/snowy/data:/sw/mf/snowy/environment:/sw/mf/snowy/libraries:/sw/mf/snowy/parallel
+++ export MODULEPATH
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtDaGVja009e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9DaGVja00vMS4xLjMiLFsiZnVsbE5hbWUiXT0iQ2hlY2tNLzEuMS4zIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0iQ2hlY2tNIix9LFsiYmlvaW5mby10b29scyJdPXtbImZuIl09Ii9zdy9tZi9zbm93eS9lbnZpcm9ubWVudC9iaW9pbmZvLXRvb2xzIixbImZ1bGxOYW1lIl09ImJpb2luZm8tdG9vbHMiLFsibG9hZE9yZGVy
+++ export _ModuleTable001_
+++ _ModuleTable002_=Il09MSxwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJiaW9pbmZvLXRvb2xzIix9LGhtbWVyPXtbImZuIl09Ii9zdy9tZi9zbm93eS9iaW9pbmZvLXRvb2xzL2FsaWdubWVudC9obW1lci8zLjIuMSIsWyJmdWxsTmFtZSJdPSJobW1lci8zLjIuMSIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImhtbWVyLzMuMi4xIix9LHBwbGFjZXI9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50L3BwbGFjZXIvMS4xLmFscGhhMTkiLFsiZnVsbE5hbWUiXT0icHBsYWNlci8xLjEuYWxwaGExOSIsWyJsb2FkT3Jk
+++ export _ModuleTable002_
+++ _ModuleTable003_=ZXIiXT01LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InBwbGFjZXIvMS4xLmFscGhhMTkiLH0scHJvZGlnYWw9e1siZm4iXT0iL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvbWlzYy9wcm9kaWdhbC8yLjYuMyIsWyJmdWxsTmFtZSJdPSJwcm9kaWdhbC8yLjYuMyIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTEsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09InByb2RpZ2FsLzIuNi4zIix9LHB5dGhvbj17WyJmbiJdPSIvc3cvbWYvc25vd3kvY29tcGlsZXJzL3B5dGhvbi8zLjguNyIsWyJmdWxsTmFtZSJdPSJweXRob24vMy44LjciLFsibG9hZE9yZGVyIl09Mixwcm9wVD17
+++ export _ModuleTable003_
+++ _ModuleTable004_=fSxbInN0YWNrRGVwdGgiXT0xLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJweXRob24vMy44LjciLH0sfSxtcGF0aEE9eyIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9hbm5vdGF0aW9uIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYWxpZ25tZW50IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvYXNzZW1ibHkiLCIvc3cvbWYvc25vd3kvYmlvaW5mby10b29scy9taXNjIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGh5bG9nZW55IiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvcGlwZWxpbmVzIiwiL3N3L21mL3Nub3d5L2Jpb2luZm8tdG9vbHMvc3dfY29sbGVjdGlvbnMiLCIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zIiwiL3N3
+++ export _ModuleTable004_
+++ _ModuleTable005_=L21mL3Nub3d5L2J1aWxkLXRvb2xzIiwiL3N3L21mL3Nub3d5L2NvbXBpbGVycyIsIi9zdy9tZi9zbm93eS9kYXRhIiwiL3N3L21mL3Nub3d5L2Vudmlyb25tZW50IiwiL3N3L21mL3Nub3d5L2xpYnJhcmllcyIsIi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvc3cvbWYvc25vd3kvYXBwbGljYXRpb25zOi9zdy9tZi9zbm93eS9idWlsZC10b29sczovc3cvbWYvc25vd3kvY29tcGlsZXJzOi9zdy9tZi9zbm93eS9kYXRhOi9zdy9tZi9zbm93eS9lbnZpcm9ubWVudDovc3cvbWYvc25vd3kvbGlicmFyaWVzOi9zdy9tZi9zbm93eS9wYXJhbGxlbCIsfQ==
+++ export _ModuleTable005_
+++ _ModuleTable_Sz_=5
+++ export _ModuleTable_Sz_
+++ : -s sh
++ eval
++ mkdir -p /home/mildo141/ga/output/05_checkM
++ mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342129_qc
++ mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342129_qc/bins
++ mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342133_qc
++ mkdir -p /home/mildo141/ga/output/05_checkM/SRR4342133_qc/bins
++ IN=/home/mildo141/ga/output/03_metabat
++ OUT=/home/mildo141/ga/output/05_checkM
++ checkm lineage_wf -t 4 -x fa --reduced_tree /home/mildo141/ga/output/03_metabat/SRR4342129 /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+[2022-04-15 12:59:22] INFO: CheckM v1.1.3
+[2022-04-15 12:59:22] INFO: checkm lineage_wf -t 4 -x fa --reduced_tree /home/mildo141/ga/output/03_metabat/SRR4342129 /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+[2022-04-15 12:59:22] INFO: [CheckM - tree] Placing bins in reference genome tree.
+[2022-04-15 12:59:22] ERROR: No bins found. Check the extension (-x) used to identify bins.
+
+  Controlled exit resulting from an unrecoverable error or warning.
++ checkm analyze -t 4 -x fa /home/mildo141/ga/output/05_checkM/SRR4342129_qc/lineage.ms /home/mildo141/ga/output/03_metabat/SRR4342129 /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+[2022-04-15 12:59:23] INFO: CheckM v1.1.3
+[2022-04-15 12:59:23] INFO: checkm analyze -t 4 -x fa /home/mildo141/ga/output/05_checkM/SRR4342129_qc/lineage.ms /home/mildo141/ga/output/03_metabat/SRR4342129 /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+[2022-04-15 12:59:23] INFO: [CheckM - analyze] Identifying marker genes in bins.
+[2022-04-15 12:59:23] ERROR: No bins found. Check the extension (-x) used to identify bins.
+
+  Controlled exit resulting from an unrecoverable error or warning.
++ checkm qa -t 4 -o 1 -f /home/mildo141/ga/output/05_checkM/SRR4342129_qc/qa.out /home/mildo141/ga/output/05_checkM/SRR4342129_qc/lineage.ms /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+[2022-04-15 12:59:24] INFO: CheckM v1.1.3
+[2022-04-15 12:59:24] INFO: checkm qa -t 4 -o 1 -f /home/mildo141/ga/output/05_checkM/SRR4342129_qc/qa.out /home/mildo141/ga/output/05_checkM/SRR4342129_qc/lineage.ms /home/mildo141/ga/output/05_checkM/SRR4342129_qc
+[2022-04-15 12:59:24] INFO: [CheckM - qa] Tabulating genome statistics.
+[2022-04-15 12:59:24] INFO: Calculating AAI between multi-copy marker genes.
+[2022-04-15 12:59:24] INFO: Reading HMM info from file.
+
+Unexpected error: <class 'FileNotFoundError'>
+Traceback (most recent call last):
+  File "/usr/local/bin/checkm", line 611, in <module>
+    checkmParser.parseOptions(args)
+  File "/usr/local/lib/python3.7/site-packages/checkm/main.py", line 848, in parseOptions
+    self.qa(options)
+  File "/usr/local/lib/python3.7/site-packages/checkm/main.py", line 364, in qa
+    binIdToModels = markerSetParser.loadBinModels(hmmModelInfoFile)
+  File "/usr/local/lib/python3.7/site-packages/checkm/markerSets.py", line 537, in loadBinModels
+    with gzip.open(filename, 'rb') as f:
+  File "/usr/local/lib/python3.7/gzip.py", line 58, in open
+    binary_file = GzipFile(filename, gz_mode, compresslevel)
+  File "/usr/local/lib/python3.7/gzip.py", line 168, in __init__
+    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '/home/mildo141/ga/output/05_checkM/SRR4342129_qc/storage/checkm_hmm_info.pkl.gz'
++ checkm lineage_wf -t 4 -x fa --reduced_tree /home/mildo141/ga/output/03_metabat/SRR4342133 /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+[2022-04-15 12:59:26] INFO: CheckM v1.1.3
+[2022-04-15 12:59:26] INFO: checkm lineage_wf -t 4 -x fa --reduced_tree /home/mildo141/ga/output/03_metabat/SRR4342133 /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+[2022-04-15 12:59:26] INFO: [CheckM - tree] Placing bins in reference genome tree.
+[2022-04-15 12:59:26] ERROR: No bins found. Check the extension (-x) used to identify bins.
+
+  Controlled exit resulting from an unrecoverable error or warning.
++ checkm analyze -t 4 -x fa /home/mildo141/ga/output/05_checkM/SRR4342133_qc/lineage.ms /home/mildo141/ga/output/03_metabat/SRR4342133 /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+[2022-04-15 12:59:27] INFO: CheckM v1.1.3
+[2022-04-15 12:59:27] INFO: checkm analyze -t 4 -x fa /home/mildo141/ga/output/05_checkM/SRR4342133_qc/lineage.ms /home/mildo141/ga/output/03_metabat/SRR4342133 /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+[2022-04-15 12:59:27] INFO: [CheckM - analyze] Identifying marker genes in bins.
+[2022-04-15 12:59:27] ERROR: No bins found. Check the extension (-x) used to identify bins.
+
+  Controlled exit resulting from an unrecoverable error or warning.
++ checkm qa -t 4 -o 1 -f /home/mildo141/ga/output/05_checkM/SRR4342133_qc/qa.out /home/mildo141/ga/output/05_checkM/SRR4342133_qc/lineage.ms /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+[2022-04-15 12:59:28] INFO: CheckM v1.1.3
+[2022-04-15 12:59:28] INFO: checkm qa -t 4 -o 1 -f /home/mildo141/ga/output/05_checkM/SRR4342133_qc/qa.out /home/mildo141/ga/output/05_checkM/SRR4342133_qc/lineage.ms /home/mildo141/ga/output/05_checkM/SRR4342133_qc
+[2022-04-15 12:59:28] INFO: [CheckM - qa] Tabulating genome statistics.
+[2022-04-15 12:59:28] INFO: Calculating AAI between multi-copy marker genes.
+[2022-04-15 12:59:28] INFO: Reading HMM info from file.
+
+Unexpected error: <class 'FileNotFoundError'>
+Traceback (most recent call last):
+  File "/usr/local/bin/checkm", line 611, in <module>
+    checkmParser.parseOptions(args)
+  File "/usr/local/lib/python3.7/site-packages/checkm/main.py", line 848, in parseOptions
+    self.qa(options)
+  File "/usr/local/lib/python3.7/site-packages/checkm/main.py", line 364, in qa
+    binIdToModels = markerSetParser.loadBinModels(hmmModelInfoFile)
+  File "/usr/local/lib/python3.7/site-packages/checkm/markerSets.py", line 537, in loadBinModels
+    with gzip.open(filename, 'rb') as f:
+  File "/usr/local/lib/python3.7/gzip.py", line 58, in open
+    binary_file = GzipFile(filename, gz_mode, compresslevel)
+  File "/usr/local/lib/python3.7/gzip.py", line 168, in __init__
+    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '/home/mildo141/ga/output/05_checkM/SRR4342133_qc/storage/checkm_hmm_info.pkl.gz'
