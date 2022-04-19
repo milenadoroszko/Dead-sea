@@ -1,0 +1,46 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 06:00:00
+#SBATCH -J bwaDNA.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+#to help identify the work
+cat $0
+echo QOS = $SLURM_QOS
+set -x
+
+
+# Load modules
+module load bioinfo-tools
+module load bwa/0.7.17
+module load samtools/1.14
+module load MetaBat/2.12.1
+
+#check which modules were loaded
+module list
+mkdir -p /home/mildo141/ga/output/04_bwaDNA
+mkdir -p /home/mildo141/ga/output/04_bwaDNA/SRR4342133
+mkdir -p /home/mildo141/ga/output/03_metabat/SRR4342133
+
+#define directories
+OUT=/home/mildo141/ga/output/04_bwaDNA/SRR4342133
+OUTM=/home/mildo141/ga/output/03_metabat/SRR4342133
+IN=/home/mildo141/Dead-sea/raw_data/3_Thrash_2017/DNA_trimmed
+
+
+REF33=/home/mildo141/ga/output/02_megahit/SRR4342133_assembly.contigs/final.contigs.fa
+
+#DNA files SRR4342129_1.paired.trimmed.fastq.gz  SRR4342129_2.paired.trimmed.fastq.gz  SRR4342133_1.paired.trimmed.fastq.gz  SRR4342133_2.paired.trimmed.fastq.gz
+
+bwa index $REF33
+bwa mem -t 2 $REF33 $IN/SRR4342133_1.paired.trimmed.fastq.gz $IN/SRR4342133_2.paired.trimmed.fastq.gz | samtools sort -o $OUT/SRR4342133.bam
+
+jgi_summarize_bam_contig_depths --outputDepth $OUTM/depth.txt --pairedContigs $OUTM/paired.txt $OUT/*.bam
+
+metabat -i $REF33 -a $OUTM/depth.txt -p $OUTM/paired.txt -o $OUTM/bin3 --specific -l -v --saveTNF $OUTM/saved.tnf --saveDistance $OUTM/saved.gprob
+
