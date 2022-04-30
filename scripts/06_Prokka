@@ -1,0 +1,45 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 06:00:00
+#SBATCH -J prokka.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+#to help identify the work
+cat $0
+echo QOS = $SLURM_QOS
+set -x
+
+#load modules
+module load bioinfo-tools
+module load prokka
+
+#check which modules were loaded
+module list
+
+mkdir -p /home/mildo141/ga/output/06_prokka
+#mkdir -p /home/mildo141/ga/output/06_prokka/SRR4342129
+mkdir -p /home/mildo141/ga/output/06_prokka/SRR4342133
+
+IN29=/home/mildo141/ga/output/03_metabat/SRR4342129/bins_normalized
+OUT29=/home/mildo141/ga/output/06_prokka/SRR4342129
+IN33=/home/mildo141/ga/output/03_metabat/SRR4342133/bins_normalized
+OUT33=/home/mildo141/ga/output/06_prokka/SRR4342133
+
+cd $IN29
+
+for sample in *.fa
+do
+prokka --addgenes --metagenome --outdir $OUT29 --force --cpus 2 --prefix ${sample} $IN29/${sample}
+done
+
+cd $IN33
+
+for sample in *.fa
+do
+prokka --addgenes --metagenome --outdir $OUT33 --force --cpus 2 --prefix ${sample} $IN33/${sample}
+done
