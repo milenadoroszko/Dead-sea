@@ -1,7 +1,0 @@
-/var/spool/slurmd/job6123295/slurm_script: line 18: ![: command not found
-TrimmomaticPE: Started with arguments:
- -threads 2 -phred33 -trimlog /home/mildo141/ga/output/01_trimming/trim_D1.log /home/mildo141/ga/Dead-sea/raw_data/3_Thrash_2017/RNA_untrimmed/SRR4342137.1.fastq.gz /home/mildo141/ga/Dead-sea/raw_data/3_Thrash_2017/RNA_untrimmed/SRR4342137.2.fastq.gz /home/mildo141/ga/output/01_trimming/RNA_trim_37.LP.trim.fastq.gz /home/mildo141/ga/output/01_trimming/RNA_trim_37.LU.trim.fastq.gz /home/mildo141/ga/output/01_trimming/RNA_trim_37.RP.trim.fastq.gz /home/mildo141/ga/output/01_trimming/RNA_trim_37.RU.trim.fastq.gz ILLUMINACLIP:/sw/apps/bioinfo/trimmomatic/0.36/milou/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:20 SLIDINGWINDOW:5:30 MINLEN:20
-Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
-ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
-Input Read Pairs: 1304686 Both Surviving: 586174 (44.93%) Forward Only Surviving: 318967 (24.45%) Reverse Only Surviving: 30124 (2.31%) Dropped: 369421 (28.31%)
-TrimmomaticPE: Completed successfully
