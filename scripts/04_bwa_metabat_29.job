@@ -44,5 +44,5 @@ bwa mem -t 2 $REF33 $IN/SRR4342129_1.paired.trimmed.fastq.gz $IN/SRR4342129_2.pa
 jgi_summarize_bam_contig_depths --outputDepth $OUTM/depth.txt --pairedContigs $OUTM/paired.txt $OUT/*.bam
 
 #run metabat after normalization to sequencing depth
-metabat -i $REF33 -a $OUTM/depth.txt -p $OUTM/paired.txt -o $OUTM/bin29 --specific -l -v --saveTNF $OUTM/saved.tnf --saveDistance $OUTM/saved.gprob
+metabat -i $REF33 -a $OUTM/depth.txt -p $OUTM/paired.txt -o $OUTM/bin29 --specific -v --saveTNF $OUTM/saved.tnf --saveDistance $OUTM/saved.gprob
 

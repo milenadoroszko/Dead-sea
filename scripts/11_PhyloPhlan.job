@@ -4,7 +4,7 @@
 #SBATCH -M snowy
 #SBATCH -p core
 #SBATCH -n 2
-#SBATCH -t 03:00:00
+#SBATCH -t 11:00:00
 #SBATCH -J Phylophlan.job
 #SBATCH --mail-user milena.doroszko.0019@student.uu.se
 #SBATCH --mail-type=ALL
