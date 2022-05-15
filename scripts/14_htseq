@@ -1,0 +1,49 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 03:00:00
+#SBATCH -J 14_htseq.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+#to help identify the work
+cat $0
+echo QOS = $SLURM_QOS
+set -x
+
+# Load modules
+module load bioinfo-tools
+module load htseq/0.12.4
+module load samtools/1.14
+
+#check which modules were loaded
+module list
+
+mkdir -p /home/mildo141/ga/output/09_htseq
+mkdir -p /home/mildo141/ga/output/09_htseq/SRR4342137
+mkdir -p /home/mildo141/ga/output/09_htseq/SRR4342139
+
+INB=/home/mildo141/ga/output/04_bwaRNA
+IND=/home/mildo141/ga/output/06_prokka
+OUT="/home/mildo141/ga/output/09_htseq"
+
+#you only want to map RNA reads to valid bins so define them here
+#remove fasta contigs from gff files (sed '/##FASTA/,$d') and save them to htseq directory
+#index bam files before running htseq
+for sample in 1 6 7 8 9 10 11 12 13 14 16 18 20 21 22 23 24 26 28 30 31 34 35 36
+do
+    sed '/##FASTA/,$d' $IND/SRR4342129/bin29.${sample}.fa.gff > $OUT/bin29.${sample}.fa.gff
+    samtools index $INB/SRR4342137/bin29.${sample}_37.bam
+    htseq-count -f bam -t CDS -i ID -s no $INB/SRR4342137/bin29.${sample}_37.bam $OUT/bin29.${sample}.fa.gff > $OUT/bin29.${sample}_37.counts
+done
+
+for sample in 1 2 3 4 5 6 7 8 11 13 14 15 16 17 18 19 20 21 22 23 26 27 28 31 32 33 34 35 36 37 40 41 43 44 45 46 47 48 49 51 52
+do
+    sed '/##FASTA/,$d' $IND/SRR4342133/bin33.${sample}.fa.gff > $OUT/bin33.${sample}.fa.gff
+    samtools index $INB/SRR4342139/bin33.${sample}_39.bam
+    htseq-count -f bam -t CDS -i ID -s no $INB/SRR4342139/bin33.${sample}_39.bam $OUT/bin33.${sample}.fa.gff > $OUT/bin33.${sample}_39.counts
+done
+
