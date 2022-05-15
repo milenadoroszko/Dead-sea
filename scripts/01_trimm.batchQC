@@ -1,0 +1,23 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -J fastQC
+#SBATCH -t 00:40:00
+
+module load  bioinfo-tools
+module load FastQC
+
+HOME=/home/mildo141/ga
+DIRIN=/home/mildo141/ga/output/01_trimming
+DIROUT=/home/mildo141/ga/output/01_trimming/FastQC
+
+mkdir -p /home/mildo141/ga/output/01_trimming
+mkdir -p /home/mildo141/ga/output/01_trimming/FastQC
+
+fastqc $DIRIN/RNA_trim_39.LP.trim.fastq.gz $DIRIN/RNA_trim_39.LU.trim.fastq.gz $DIRIN/RNA_trim_39.RP.trim.fastq.gz \
+$DIRIN/RNA_trim_39.RU.trim.fastq.gz --outdir=$DIROUT/
+
+fastqc $DIRIN/RNA_trim_37.LP.trim.fastq.gz $DIRIN/RNA_trim_37.LU.trim.fastq.gz $DIRIN/RNA_trim_37.RP.trim.fastq.gz \
+$DIRIN/RNA_trim_37.RU.trim.fastq.gz --outdir=$DIROUT/
+

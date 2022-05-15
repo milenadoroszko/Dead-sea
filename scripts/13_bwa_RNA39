@@ -1,0 +1,42 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 03:00:00
+#SBATCH -J 04_bwa39.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+#to help identify the work
+cat $0
+echo QOS = $SLURM_QOS
+set -x
+
+module load bioinfo-tools
+module load bwa/0.7.17
+module load samtools/1.14
+module load MetaBat/2.12.1
+
+#check which modules were loaded
+module list
+mkdir -p /home/mildo141/ga/output/04_bwaRNA
+mkdir -p /home/mildo141/ga/output/04_bwaRNA/SRR4342139
+mkdir -p /home/mildo141/ga/output/03_metabat/SRR4342139
+
+
+#define directories
+OUT=/home/mildo141/ga/output/04_bwaRNA/SRR4342139
+OUTM=/home/mildo141/ga/output/03_metabat/SRR4342139
+IN=/home/mildo141/ga/output/01_trimming
+
+REF33="/home/mildo141/ga/output/03_metabat/SRR4342133/bins_normalized"
+
+cd /home/mildo141/ga/output/03_metabat/SRR4342133/bins_normalized
+
+for sample in bin33.*.fa
+do
+   bwa index $REF33/${sample}
+   bwa mem -t 2 $REF33/${sample} $IN/RNA_trim_39.LP.trim.fastq.gz $IN/RNA_trim_39.RP.trim.fastq.gz | samtools sort -@ 2 -out $OUT/${sample}_39.bam
+done

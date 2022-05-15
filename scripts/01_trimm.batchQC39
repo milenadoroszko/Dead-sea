@@ -1,6 +1,6 @@
 #!/bin/bash -l
-#SBATCH -A uppmax2022-2-5 
-#SBATCH -M snowy 
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
 #SBATCH -p core
 #SBATCH -J fastQC
 #SBATCH -t 00:40:00
@@ -8,28 +8,15 @@
 module load  bioinfo-tools
 module load FastQC
 
-HOME=/home/mildo141/ga/Dead-sea
-DIRIN=$HOME/output/trimming
-DIROUT=$HOME/output/trimming/FastQC
-ARC=SRR4342139
+HOME=/home/mildo141/ga
+DIRIN=/home/mildo141/ga/output/trimming
+DIROUT=/home/mildo141/ga/output/trimming/FastQC
 
-if ![ -e $DIROUT ]
+if ! [ -e $DIROUT ]
 then
 touch $DIROUT
 fi
 
-mkdir $DIROUT/$ARC
+mkdir -p $DIROUT/SRR4342139
 
-fastqc $DIRIN/RNA_trim_39.LP.trim.fastq.gz $DIRIN/RNA_trim_39.LU.trim.fastq.gz $DIRIN/RNA_trim_39.RP.trim.fastq.gz $DIRIN/RNA_trim_39.RU.trim.fastq.gz --outdir=$DIROUT/$ARC
-
-
-
-
-
-
-
-
-
-
-
-
+fastqc $DIRIN/RNA_trim_39.LP.trim.fastq.gz $DIRIN/RNA_trim_39.LU.trim.fastq.gz $DIRIN/RNA_trim_39.RP.trim.fastq.gz $DIRIN/RNA_trim_39.RU.trim.fastq.gz --outdir=$DIROUT/SRR4342139

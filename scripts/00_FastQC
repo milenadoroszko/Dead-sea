@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -J fastQC
+#SBATCH -t 00:40:00
+
+module load  bioinfo-tools
+module load FastQC
+
+
+DIRIN=/home/mildo141/Dead-sea/raw_data/3_Thrash_2017/RNA_untrimmed
+DIROUT=/home/mildo141/ga/output/01_trimming/FastQC
+
+mkdir -p /home/mildo141/ga/output/01_trimming/FastQC
+
+fastqc $DIRIN/SRR4342137.1.fastq.gz $DIRIN/SRR4342137.2.fastq.gz --outdir=$DIROUT/
+
+fastqc $DIRIN/SRR4342139.1.fastq.gz $DIRIN/SRR4342139.2.fastq.gz --outdir=$DIROUT/
