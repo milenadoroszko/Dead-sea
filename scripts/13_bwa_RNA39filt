@@ -35,6 +35,6 @@ cd /home/mildo141/ga/output/03_metabat/SRR4342133/bins_normalized
 for sample in 1 2 3 4 5 6 7 8 11 13 14 15 16 17 18 19 20 21 22 23 26 27 28 31 32 33 34 35 36 37 40 41 43 44 45 46 47 48 49 51 52
 do
    bwa index $REF33/bin33.${sample}.fa
-   bwa mem -t 2 $REF33/bin33.${sample}.fa $IN/RNA_trim_39.LP.trim.fastq.gz $IN/RNA_trim_39.RP.trim.fastq.gz | samtools sort -@ 2 -o $OUT/${sample}_39.bam
+   bwa mem -t 2 $REF33/bin33.${sample}.fa $IN/RNA_trim_39.LP.trim.fastq.gz $IN/RNA_trim_39.RP.trim.fastq.gz | samtools sort -@ 2 -o $OUT/bin33.${sample}_39.bam
 done
 
