@@ -3,8 +3,8 @@
 #SBATCH -A uppmax2022-2-5
 #SBATCH -M snowy
 #SBATCH -p core
-#SBATCH -n 4
-#SBATCH -t 11:00:00
+#SBATCH -n 2
+#SBATCH -t 24:00:00
 #SBATCH -J Phylophlan.job
 #SBATCH --mail-user milena.doroszko.0019@student.uu.se
 #SBATCH --mail-type=ALL
@@ -28,7 +28,8 @@ module load muscle/3.8.31
 module list
 #
 mkdir -p /home/mildo141/ga/output/07_Phylo
-mkdir -p /home/mildo141/ga/output/07_Phylo/input/metagenome
+mkdir -p /home/mildo141/ga/output/07_Phylo/input/SRR4342129
+mkdir -p /home/mildo141/ga/output/07_Phylo/input/SRR4342133
 mkdir -p /home/mildo141/ga/output/07_Phylo/output
 mkdir -p /home/mildo141/ga/output/07_Phylo/data/ppaalns
 
@@ -41,13 +42,13 @@ ln -sf /sw/apps/bioinfo/phylophlan/0.99/rackham/bin/data/*.bz2 $OUT/data/
 ln -sf /sw/apps/bioinfo/phylophlan/0.99/rackham/bin/data/ppaalns/*.bz2 $OUT/data/ppaalns/
 ln -sf /sw/apps/bioinfo/phylophlan/0.99/rackham/bin/data/ppafull.tax.txt $OUT/data/
 ln -sf /sw/apps/bioinfo/phylophlan/0.99/rackham/bin/taxcuration/ $OUT/
-ln -sf /home/mildo141/ga/output/06_prokka/SRR4342129/*.faa $OUT/input/metagenome
-ln -sf /home/mildo141/ga/output/06_prokka/SRR4342133/*.faa $OUT/input/metagenome
+ln -sf /home/mildo141/ga/output/06_prokka/SRR4342129/*.faa $OUT/input/SRR4342129
+ln -sf /home/mildo141/ga/output/06_prokka/SRR4342133/*.faa $OUT/input/SRR4342133
 
 
 #PhyloPhlAn (-d phylophlan, 400 universal marker genes) presented in Segata, N et al. NatComm 4:2304 (2013)
 #AMPHORA2 (-d amphora2, 136 universal marker genes) presented in Wu M, Scott AJ Bioinformatics 28.7 (2012)
 
 cd $OUT
-phylophlan.py -i metagenome -t --nproc 4
-
+phylophlan.py -i SRR4342129 -t --nproc 4 2> SRR4342129.phylophlan.err
+phylophlan.py -i SRR4342133 -t --nproc 4 2> SRR4342133.phylophlan.err

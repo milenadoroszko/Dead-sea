@@ -1,0 +1,30 @@
+#!/bin/bash -l
+
+#SBATCH -A uppmax2022-2-5
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 02:00:00
+#SBATCH -J quast.job
+#SBATCH --mail-user milena.doroszko.0019@student.uu.se
+#SBATCH --mail-type=ALL
+
+#to help identify the work
+cat $0
+echo QOS = $SLURM_QOS
+set -x
+
+# Load modules
+module load bioinfo-tools
+module load quast
+
+#
+
+mkdir -p /home/mildo141/ga/Dead-sea/output/quast
+IN=/home/mildo141/ga/output/02_megahit
+OUT=/home/mildo141/ga/Dead-sea/output/quast
+
+metaquast.py -o $OUT/SRR4342129_qc $IN/SRR4342129_assembly.contigs/final.contigs.fa
+metaquast.py -o $OUT/SRR4342133_qc $IN/SRR4342133_assembly.contigs/final.contigs.fa
+
+
